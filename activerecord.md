@@ -4,6 +4,7 @@
 
 Data Types
 
+- :primary_key
 - :string
 - :text
 - :integer
@@ -15,11 +16,37 @@ Data Types
 - :binary
 - :boolean
 
-Special Types
+Special Types (Short-Hands):
 
-- :primary_key
-- :references
-- :timestamps
+- :timestamps  -  adds created_at and updated_at as datetimes.
+- :references  -  add an appropriately-named _id colum (e.g. brewery becomes brewery_id)
+
+**references Options**
+
+- If the :polymorphic option is used a corresponding _type column gets added; if the :polymorphic is a hash of options, these will be passed through when creating the _type column.
+- If the :index option is used it will also create an index, similar to calling add_index.
+
+~~~
+create_table :taggings do |t|
+  t.references :tag,       index: { name: 'index_taggings_on_tag_id' }
+  t.references :tagger,    polymorphic: true, index: true
+  t.references :taggable,  polymorphic: { default: 'Photo' }
+end
+~~~
+
+becomes
+
+~~~
+create_table :taggings do |t|
+  t.integer :tag_id
+  t.integer :tagger_id
+  t.string  :tagger_type
+  t.integer :taggable_id
+  t.string  :taggable_type, default: 'Photo'
+end
+add_index :taggings, :tag_id, name: 'index_taggings_on_tag_id'
+add_index :taggings, [:tagger_id, :tagger_type]
+~~~
 
 ### Options
 
@@ -44,5 +71,12 @@ The SQL standard says the default scale should be 0, :scale <= :precision, and m
 
 - PostgreSQL: :precision [1..infinity], :scale [0..infinity]. No default.
 - SQLite3: No restrictions on :precision and :scale, but the maximum supported :precision is 16. No default.
+
+
+### References
+
+- [Rails Guide - Migrations]()
+- [Rails API - Table Class ??]()
+
 
 
