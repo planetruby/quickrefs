@@ -4,19 +4,39 @@
 
 Data Types
 
-- primary_key
-- string
-- text
-- integer
-- float
-- decimal
-- datetime
-- time
-- date
-- binary
-- boolean
+Type         | Options | Comments
+------------ | ------- | -------------
+primary_key  |
+string       | limit
+text         | limit
+integer      | limit
+float        |
+decimal      | precision, scale 
+datetime     |
+time         |
+date         |
+binary       | limit
+boolean      |
+
+General Options
+
+- null
+- default
+- required: true  alias for null: false
+- index
+
+
+PostgreSQL Data Types
+
+- hstore
+- json
+- array
+- cidr_address
+- ip_address
+- mac_address
 
 Short-Hand Types
+
 - timestamps  -  adds created_at and updated_at as datetimes.
 
 
