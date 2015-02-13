@@ -166,6 +166,12 @@ The SQL standard says the default scale should be 0, :scale <= :precision, and m
 - SQLite3: No restrictions on :precision and :scale, but the maximum supported :precision is 16. No default.
 
 
+## "Reserved" Magic ActiveRecord Column Names
+
+- type      -- used for single table inheritance (STI)
+- <column>_cache  -- used for counter caches
+- <column>_type  -- used for polymorphic associations
+- ??? add more 
 
 
 ### references (Short-Hands Type)
