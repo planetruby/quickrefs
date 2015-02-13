@@ -18,6 +18,14 @@ date         |
 binary       | limit - number of bytes
 boolean      |
 
+SQLite3 Notes:
+- boolean -  ActiveRecord stores t and f in column (do NOT expect numeric 0 or 1)
+- decimal -  No restrictions on :precision and :scale, but the maximum supported :precision is 16. No default.
+
+PostgreSQL Notes:
+- decimal - :precision [1..infinity], :scale [0..infinity]. No default.
+
+
 General Options
 
             | Comments
