@@ -6,46 +6,47 @@ Data Types
 
 Type         | Options | Comments
 ------------ | ------- | -------------
-primary_key  |
-string       | limit
-text         | limit
-integer      | limit
+primary_key  |      
+string       | limit - number of characters
+text         | limit - number of characters
+integer      | limit - number of bytes
 float        |
-decimal      | precision, scale 
+decimal      | precision, scale e.g. 123.45 has a precision of 5 and a scale of 2
 datetime     |
 time         |
 date         |
-binary       | limit
+binary       | limit - number of bytes
 boolean      |
 
 General Options
 
-- null
-- default
-- required: true  alias for null: false
-- index
+            | Comments
+------------| --------------------
+null        | true or false - Allows or disallows NULL values in the column. This option could have been named :null_allowed.
+default     | The column's default value. Use nil for NULL.
+index       | Create an index for the column. Can be either true or an options hash.
+required    | true or false - required: true is an alias for null: false
 
 
 PostgreSQL Data Types
 
-- hstore
-- json
-- array
-- cidr_address
-- ip_address
-- mac_address
+Type         | Comments
+------------ | -------------
+hstore       |
+json         |
+array        |
+cidr_address |
+ip_address   |
+mac_address  |
 
 Short-Hand Types
 
-- timestamps  -  adds created_at and updated_at as datetimes.
+Type         | Comments
+------------ | -------------
+timestamps   | adds created_at and updated_at as datetimes.
 
 
-PostgreSQL Types
-
-
-
-
-Colum Types Mappings
+### Colum Types Mappings
 
 Type      | PostgreSQL | SQLite
 --------- | ---------- | -------------
