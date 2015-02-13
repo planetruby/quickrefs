@@ -40,12 +40,13 @@ PostgreSQL Data Types
 
 Type         | Comments
 ------------ | -------------
-hstore       |
-json         |
-array        |
-cidr_address |
-ip_address   |
-mac_address  |
+hstore       | storing key/value pairs within a single value
+json         | 
+array        | an arrangement of numbers or strings in a particular row
+cidr_address | used for IPv4 or IPv6 host addresses
+ip_address   | used for IPv4 or IPv6 host addresses, same as cidr_address but it also accepts values with nonzero bits to the right of the netmask
+mac_address  | used for MAC host addresses
+
 
 Short-Hand Types
 
@@ -56,19 +57,80 @@ timestamps   | adds created_at and updated_at as datetimes.
 
 ### Colum Types Mappings
 
-Type      | PostgreSQL | SQLite
---------- | ---------- | -------------
-binary    | bytea      | blob
-boolean   | boolean    | boolean
-date      | date       | date
-datetime  | timestamp  | datetime
-decimal   | decimal    | decimal
-float     | float      | float
-integer   | integer    | integer
-string    | *          | varchar(255)
-text      | text       | text
-time      | time       | datetime
-timestamp | timestamp  | datetime
+Type      | PostgreSQL | SQLite        | Ruby Class
+--------- | ---------- | ------------- | ---------
+binary    | bytea      | blob          |
+boolean   | boolean    | boolean       |
+date      | date       | date          |
+datetime  | timestamp  | datetime      |
+decimal   | decimal    | decimal       |
+float     | float      | float         | 
+integer   | integer    | integer       |
+string    | *          | varchar(255)  |
+text      | text       | text          |
+time      | time       | datetime      |
+timestamp | timestamp  | datetime      | 
+
+Note: For mappings see the NATIVE_DATABASE_TYPES hash in the ActiveRecord connection adapter:
+- [sqlite3_adapter.rb](https://github.com/rails/rails/blob/master/activerecord/lib/active_record/connection_adapters/sqlite3_adapter.rb)
+- [postgresql_adpater.rb](https://github.com/rails/rails/blob/master/activerecord/lib/active_record/connection_adapters/postgresql_adapter.rb)
+
+sqlite3:
+~~~
+NATIVE_DATABASE_TYPES = {
+        primary_key:  'INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL',
+        string:       { name: "varchar" },
+        text:         { name: "text" },
+        integer:      { name: "integer" },
+        float:        { name: "float" },
+        decimal:      { name: "decimal" },
+        datetime:     { name: "datetime" },
+        time:         { name: "time" },
+        date:         { name: "date" },
+        binary:       { name: "blob" },
+        boolean:      { name: "boolean" }
+      }
+~~~
+
+postgresql:
+~~~
+NATIVE_DATABASE_TYPES = {
+        primary_key: "serial primary key",
+        bigserial: "bigserial",
+        string:      { name: "character varying" },
+        text:        { name: "text" },
+        integer:     { name: "integer" },
+        float:       { name: "float" },
+        decimal:     { name: "decimal" },
+        datetime:    { name: "timestamp" },
+        time:        { name: "time" },
+        date:        { name: "date" },
+        daterange:   { name: "daterange" },
+        numrange:    { name: "numrange" },
+        tsrange:     { name: "tsrange" },
+        tstzrange:   { name: "tstzrange" },
+        int4range:   { name: "int4range" },
+        int8range:   { name: "int8range" },
+        binary:      { name: "bytea" },
+        boolean:     { name: "boolean" },
+        bigint:      { name: "bigint" },
+        xml:         { name: "xml" },
+        tsvector:    { name: "tsvector" },
+        hstore:      { name: "hstore" },
+        inet:        { name: "inet" },
+        cidr:        { name: "cidr" },
+        macaddr:     { name: "macaddr" },
+        uuid:        { name: "uuid" },
+        json:        { name: "json" },
+        jsonb:       { name: "jsonb" },
+        ltree:       { name: "ltree" },
+        citext:      { name: "citext" },
+        point:       { name: "point" },
+        bit:         { name: "bit" },
+        bit_varying: { name: "bit varying" },
+        money:       { name: "money" },
+      }
+~~~
 
 
 ### Options
