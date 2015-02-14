@@ -1,172 +1,129 @@
 # ActiveRecord Quick Reference (Cheat Sheet)
 
+
 ## Migrations
 
-Data Types
+### Data Types
 
-Type         | Options | Comments
------------- | ------- | -------------
-primary_key  |      
+**Numerics**
+
+Type         | Options
+------------ | ------- 
+integer      | limit - number of bytes e.g. bigint w/ 8 bytes, tinyint w/ 1 byte, etc.
+float        |
+decimal      | precision - total number of significant digits, scale - number of digits following the decimal point  e.g. The number 123.45 has a precision of 5 and a scale of 2; a decimal with a precision of 5 and a scale of 2 can range from -999.99 to 999.99.
+
+
+decimal Notes:
+- The SQL standard says the default scale should be 0, scale <= precision,
+  and makes no comments about the requirements of precision.
+- SQLite3    - No restrictions on precision and scale, but the maximum supported precision is 16. No default.
+- MySQL      - ??
+- PostgreSQL - precision [1..infinity], scale [0..infinity]. No default.
+
+
+Column Types Mappings
+
+Type      | MySQL      | PostgreSQL    | SQLite        | Ruby Class
+--------- | ---------- | ------------- | ------------- | ---------- 
+integer   |            | integer       | integer       | Numeric
+float     |            | float         | float         | Float 
+decimal   |            | decimal       | decimal       | BigDecimal
+
+
+
+
+**Strings**
+
+Type         | Options
+------------ | -------
 string       | limit - number of characters
 text         | limit - number of characters
-integer      | limit - number of bytes
-float        |
-decimal      | precision, scale e.g. 123.45 has a precision of 5 and a scale of 2
+
+Column Types Mappings
+
+Type      | MySQL      | PostgreSQL        | SQLite        | Ruby Class
+--------- | ---------- | ----------------- | ------------- | ---------- 
+string    |            | character varying | varchar(255)  |
+text      |            | text              | text          |
+
+
+
+**Date**
+
+Type         | Options
+------------ | -------
+date         |
 datetime     |
 time         |
-date         |
+
+
+Column Types Mappings
+
+Type      | MySQL      | PostgreSQL    | SQLite        | Ruby Class
+--------- | ---------- | ------------- | ------------- | ---------- 
+date      |            | date          | date          |
+datetime  |            | timestamp     | datetime      |
+time      |            | time          | time          |
+
+
+
+
+**The Works**
+
+Type         | Options                
+------------ | -----------------------
 binary       | limit - number of bytes
 boolean      |
+primary_key  |                        
 
-SQLite3 Notes:
-- boolean -  ActiveRecord stores t and f in column (do NOT expect numeric 0 or 1)
-- decimal -  No restrictions on :precision and :scale, but the maximum supported :precision is 16. No default.
+boolean Notes:
+- SQLite - ActiveRecord stores t and f in column (do NOT expect numeric 0 or 1)
 
-PostgreSQL Notes:
-- decimal - :precision [1..infinity], :scale [0..infinity]. No default.
+primarykey Notes:
+- ActiveRecord auto-adds primary_key `id` by default;
+  allows only single columns (NOT composite keys);
+  primary key colum by definition is NOT NULL (null: false);
+  numeric (integer/sequence) recommended
+
+Column Types Mappings
+
+Type        | MySQL      | PostgreSQL    | SQLite        | Ruby Class
+----------- | ---------- | ------------- | ------------- | ---------- 
+binary      |            | bytea         | blob          |
+boolean     |            | boolean       | boolean       |
+primary_key |            | serial primary key | integer primary key autoincrement not null | 
 
 
-General Options
 
-            | Comments
+#### General Options
+
+Option      | Comments
 ------------| --------------------
 null        | true or false - Allows or disallows NULL values in the column. This option could have been named :null_allowed.
 default     | The column's default value. Use nil for NULL.
 index       | Create an index for the column. Can be either true or an options hash.
 required    | true or false - required: true is an alias for null: false
 
-
-PostgreSQL Data Types
-
-Type         | Comments
------------- | -------------
-hstore       | storing key/value pairs within a single value
-json         | 
-array        | an arrangement of numbers or strings in a particular row
-cidr_address | used for IPv4 or IPv6 host addresses
-ip_address   | used for IPv4 or IPv6 host addresses, same as cidr_address but it also accepts values with nonzero bits to the right of the netmask
-mac_address  | used for MAC host addresses
+first: true      ## ??
+after: :email    ## ??
+unique: true     ## ??
 
 
-Short-Hand Types
+#### Short-Hand Types
 
 Type         | Comments
 ------------ | -------------
 timestamps   | adds created_at and updated_at as datetimes.
 
 
-### Colum Types Mappings
-
-Type      | PostgreSQL | SQLite        | Ruby Class
---------- | ---------- | ------------- | ---------
-binary    | bytea      | blob          |
-boolean   | boolean    | boolean       |
-date      | date       | date          |
-datetime  | timestamp  | datetime      |
-decimal   | decimal    | decimal       |
-float     | float      | float         | 
-integer   | integer    | integer       |
-string    | *          | varchar(255)  |
-text      | text       | text          |
-time      | time       | datetime      |
-timestamp | timestamp  | datetime      | 
-
 Note: For mappings see the NATIVE_DATABASE_TYPES hash in the ActiveRecord connection adapter:
 - [sqlite3_adapter.rb](https://github.com/rails/rails/blob/master/activerecord/lib/active_record/connection_adapters/sqlite3_adapter.rb)
+- [mysql_adapter.rb](https://github.com/rails/rails/blob/master/activerecord/lib/active_record/connection_adapters/mysql_adapter.rb)
 - [postgresql_adpater.rb](https://github.com/rails/rails/blob/master/activerecord/lib/active_record/connection_adapters/postgresql_adapter.rb)
 
-sqlite3:
-~~~
-NATIVE_DATABASE_TYPES = {
-        primary_key:  'INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL',
-        string:       { name: "varchar" },
-        text:         { name: "text" },
-        integer:      { name: "integer" },
-        float:        { name: "float" },
-        decimal:      { name: "decimal" },
-        datetime:     { name: "datetime" },
-        time:         { name: "time" },
-        date:         { name: "date" },
-        binary:       { name: "blob" },
-        boolean:      { name: "boolean" }
-      }
-~~~
 
-postgresql:
-~~~
-NATIVE_DATABASE_TYPES = {
-        primary_key: "serial primary key",
-        bigserial: "bigserial",
-        string:      { name: "character varying" },
-        text:        { name: "text" },
-        integer:     { name: "integer" },
-        float:       { name: "float" },
-        decimal:     { name: "decimal" },
-        datetime:    { name: "timestamp" },
-        time:        { name: "time" },
-        date:        { name: "date" },
-        daterange:   { name: "daterange" },
-        numrange:    { name: "numrange" },
-        tsrange:     { name: "tsrange" },
-        tstzrange:   { name: "tstzrange" },
-        int4range:   { name: "int4range" },
-        int8range:   { name: "int8range" },
-        binary:      { name: "bytea" },
-        boolean:     { name: "boolean" },
-        bigint:      { name: "bigint" },
-        xml:         { name: "xml" },
-        tsvector:    { name: "tsvector" },
-        hstore:      { name: "hstore" },
-        inet:        { name: "inet" },
-        cidr:        { name: "cidr" },
-        macaddr:     { name: "macaddr" },
-        uuid:        { name: "uuid" },
-        json:        { name: "json" },
-        jsonb:       { name: "jsonb" },
-        ltree:       { name: "ltree" },
-        citext:      { name: "citext" },
-        point:       { name: "point" },
-        bit:         { name: "bit" },
-        bit_varying: { name: "bit varying" },
-        money:       { name: "money" },
-      }
-~~~
-
-
-### Options
-
-- null       - Allows or disallows NULL values in the column. This option could have been named :null_allowed.
-- default    - The column's default value. Use nil for NULL.
-- limit      - Requests a maximum column length. This is number of characters for :string and :text columns and number of bytes for :binary and :integer columns.
-- precision  - Specifies the precision for a :decimal column.
-- scale      - Specifies the scale for a :decimal column.
-- index      - Create an index for the column. Can be either true or an options hash.
-
-Note: None of the options are set by default.
-
-default: <value>
-limit: 30
-null: false
-first: true      ## ??
-after: :email    ## ??
-unique: true     ## ??
-
-
-Note: The precision is the total number of significant digits 
-and the scale is the number of digits that can be stored following the decimal point. For example:
-
--  The number 123.45 has a precision of 5 and a scale of 2.
--  A decimal with a precision of 5 and a scale of 2 can range from -999.99 to 999.99.
-
-Please be aware of different behavior with :decimal columns for :database systems: 
-
-The SQL standard says the default scale should be 0, :scale <= :precision, and makes no comments about the requirements of :precision.
-
-- PostgreSQL: :precision [1..infinity], :scale [0..infinity]. No default.
-- SQLite3: No restrictions on :precision and :scale, but the maximum supported :precision is 16. No default.
-
-
-## "Reserved" Magic ActiveRecord Column Names
+### "Reserved" Magic ActiveRecord Column Names
 
 - type      -- used for single table inheritance (STI)
 - <column>_cache  -- used for counter caches
@@ -224,14 +181,14 @@ remove_index
 
 **Table Methods**
 
-change_table
+change_table
 
 ~~~
 change_table :table_name, {options} do |t|
   t.change :column_name, :new_column_type
   t.remove :column_name
 end
-~~~
+~~~
 
 create_table
 
@@ -249,12 +206,13 @@ table_options:
 - :primary_key :symbol overrides the default name of :id for the primary column. Use this to specify the name of the column in the database
   that Rails will use to store the primary key
 - :options     "string" pass raw options to your underlying database, e.g. auto_in- crement = 10000. Note that passing options will cause you to lose the default ENGINE=InnoDB statement
-
+
+
 drop_table
 
 ~~~
 drop_table :table_name
-~~~
+~~~
 
 rename_table
 
@@ -265,7 +223,7 @@ rename_table :old_table_name, :new_table_name
 
 ## column methods
 
-add_column
+add_column
 
 ~~~
 add_column :table_name, :column_name, :column_type, {column_options}
@@ -277,18 +235,18 @@ column_options:
 - :default string set a default value for the column
 - :precision integer Specifies the precision for a :decimal column.
 - :scale integer Specifies the scale for a :decimal column.
-
+
 change_column
 
 ~~~
 change_column :table_name, :column_name, :new_column_type
-~~~
+~~~
 
 rename_column
 
 ~~~
 rename_column :table_name, :old_column_name, :new_column_name
-~~~
+~~~
 
 remove_column
 
@@ -303,7 +261,7 @@ add_index
 
 ~~~
 add_index :table_name, :column_name, :unique => true
-~~~
+~~~
 
 remove_index
 
