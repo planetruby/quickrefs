@@ -135,31 +135,28 @@ index        | If the index option is used it will also create an index, similar
 Examples:
 
 ~~~
-t.references :tag,  index: { name: 'index_taggings_on_tag_id' }
+create_table :taggings do |t|
+  t.references :tag,  index: { name: 'index_taggings_on_tag_id' }  #1
 
-  =>
+  t.references :tagger,  polymorphic: true, index: true            #2
 
-t.integer :tag_id
-add_index :taggings, :tag_id, name: 'index_taggings_on_tag_id'
-~~~
+  t.references :taggable,  polymorphic: { default: 'Photo' }       #3
+end
 
-~~~
-t.references :tagger,  polymorphic: true, index: true
+=>
 
-  =>
+create_table :taggings do |t|
+  t.integer :tag_id                           #1a
 
-t.integer :tagger_id
-t.string  :tagger_type
-add_index :taggings, [:tagger_id, :tagger_type]
-~~~
+  t.integer :tagger_id                        #2a
+  t.string  :tagger_type                      #2b
 
-~~~
-t.references :taggable,  polymorphic: { default: 'Photo' }
+  t.integer :taggable_id                      #3a
+  t.string  :taggable_type, default: 'Photo'  #3b
+end
 
-  =>
-
-t.integer :taggable_id
-t.string  :taggable_type, default: 'Photo'
+add_index :taggings, :tag_id, name: 'index_taggings_on_tag_id'   #1b
+add_index :taggings, [:tagger_id, :tagger_type]                  #2c
 ~~~
 
 

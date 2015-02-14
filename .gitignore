@@ -1,2 +1,9 @@
 _site/
 .sass-cache/
+
+###########
+# ignore (sqlite) dbs in top level directory
+
+*.db
+*.sqlite
+
