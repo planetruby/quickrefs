@@ -67,24 +67,16 @@ datetime  |            | timestamp     | datetime      |
 time      |            | time          | time          |
 
 
-
-
 **The Works**
 
 Type         | Options                
 ------------ | -----------------------
 binary       | limit - number of bytes
 boolean      |
-primary_key  |                        
 
 boolean Notes:
 - SQLite - ActiveRecord stores t and f in column (do NOT expect numeric 0 or 1)
 
-primarykey Notes:
-- ActiveRecord auto-adds primary_key `id` by default;
-  allows only single columns (NOT composite keys);
-  primary key colum by definition is NOT NULL (null: false);
-  numeric (integer/sequence) recommended
 
 Column Types Mappings
 
@@ -92,6 +84,19 @@ Type        | MySQL      | PostgreSQL    | SQLite        | Ruby Class
 ----------- | ---------- | ------------- | ------------- | ---------- 
 binary      |            | bytea         | blob          |
 boolean     |            | boolean       | boolean       |
+
+
+**Primary Keys**
+
+ActiveRecord auto-adds primary_key `id` by default;
+allows only single columns (NOT composite keys);
+primary key colum by definition is NOT NULL;
+numeric (integer/sequence) recommended
+
+Column Types Mappings
+
+Type        | MySQL      | PostgreSQL    | SQLite        | Ruby Class
+----------- | ---------- | ------------- | ------------- | ---------- 
 primary_key |            | serial primary key | integer primary key autoincrement not null | 
 
 
@@ -109,6 +114,7 @@ required    | true or false - required: true is an alias for null: false
 - first: true    ??
 - after: :email  ??
 - unique: true   ??  -- used for add index only??
+
 
 
 #### Short-Hand Types
