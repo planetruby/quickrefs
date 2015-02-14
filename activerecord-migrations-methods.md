@@ -1,8 +1,6 @@
 # ActiveRecord Quick Reference (Cheat Sheet)
 
-## Migration Methods
-
-
+## Migration 
 
 ### Migration Methods
 

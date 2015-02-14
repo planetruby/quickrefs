@@ -116,7 +116,7 @@ required    | true or false - required: true is an alias for null: false
 Type         | Comments
 ------------ | -------------
 timestamps   | adds created_at and updated_at as datetimes.
-references   | adds an appropriately-named _id colum (e.g. brewery becomes brewery_id)
+references   | adds an appropriately-named _id column (e.g. brewery becomes brewery_id)
 
 
 **references Options**
@@ -130,18 +130,18 @@ Examples:
 
 ~~~
 t.references :tag,  index: { name: 'index_taggings_on_tag_id' }
-~~~
-=>
-~~~
+
+  =>
+
 t.integer :tag_id
 add_index :taggings, :tag_id, name: 'index_taggings_on_tag_id'
 ~~~
 
 ~~~
 t.references :tagger,  polymorphic: true, index: true
-~~~
-=>
-~~~
+
+  =>
+
 t.integer :tagger_id
 t.string  :tagger_type
 add_index :taggings, [:tagger_id, :tagger_type]
@@ -149,9 +149,9 @@ add_index :taggings, [:tagger_id, :tagger_type]
 
 ~~~
 t.references :taggable,  polymorphic: { default: 'Photo' }
-~~~
-=>
-~~~
+
+  =>
+
 t.integer :taggable_id
 t.string  :taggable_type, default: 'Photo'
 ~~~
@@ -188,7 +188,7 @@ primary_key     | symbol - overrides the default name of :id for the primary col
 options         | string - pass raw options to your underlying database, e.g. auto_in- crement = 10000. Note that passing options will cause you to lose the default ENGINE=InnoDB statement
 
 
-**create_join_table**
+**create_join_table (Short-Hand)**
 
 ~~~
 create_join_table :table_name_one, :table_name_two
@@ -209,7 +209,7 @@ add_index :table_name, :column_name, :unique => true
 
 ## References
 
-Note: For mappings see the NATIVE_DATABASE_TYPES hash in the ActiveRecord connection adapter:
+For mappings see the NATIVE_DATABASE_TYPES hash in the ActiveRecord connection adapter:
 - [sqlite3_adapter.rb](https://github.com/rails/rails/blob/master/activerecord/lib/active_record/connection_adapters/sqlite3_adapter.rb)
 - [mysql_adapter.rb](https://github.com/rails/rails/blob/master/activerecord/lib/active_record/connection_adapters/mysql_adapter.rb)
 - [postgresql_adpater.rb](https://github.com/rails/rails/blob/master/activerecord/lib/active_record/connection_adapters/postgresql_adapter.rb)
