@@ -9,7 +9,7 @@
 
 Type         | Options
 ------------ | ------- 
-integer      | limit - number of bytes e.g. bigint w/ 8 bytes, tinyint w/ 1 byte, etc.
+integer      | limit - number of bytes e.g. bigint w/ 8 bytes/64bits, tinyint w/ 1 byte/8bits, etc.
 float        |
 decimal      | precision - total number of significant digits, scale - number of digits following the decimal point  e.g. The number 123.45 has a precision of 5 and a scale of 2; a decimal with a precision of 5 and a scale of 2 can range from -999.99 to 999.99.
 

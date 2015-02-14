@@ -1,5 +1,5 @@
 #####################################
-# a schema for sample store/shop
+# a schema for sample shop/store
 #
 #  order
 #  customer
