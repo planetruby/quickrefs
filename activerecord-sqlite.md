@@ -46,6 +46,8 @@ boolean Notes:
 
 ### Music Example
 
+-- fix: include schema/music.rb  (do NOT duplicate)
+
 ~~~
   create_table :artists do |t|
     t.string      :name,    null: false, limit: 100
@@ -68,6 +70,8 @@ boolean Notes:
 ~~~
 
 becomes
+
+-- fix: include schema/music.sqlite.rb  (do NOT duplicate)
 
 ~~~
 CREATE TABLE "artists" (
