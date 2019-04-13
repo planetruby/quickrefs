@@ -1,4 +1,4 @@
-# Ruby Net::HTTP Quick Reference (Cheat Sheet)
+# Ruby Net::HTTP Quick Reference (Cheat Sheet) - Request, Response, Headers, etc.
 
 
 ## Normal
