@@ -1,5 +1,7 @@
 # ActiveRecord Quick Reference (Cheat Sheet)
 
+Data Types, Associations, Finders, etc.
+
 
 ## Finders
 
